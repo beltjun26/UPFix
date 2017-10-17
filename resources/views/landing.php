@@ -24,7 +24,7 @@
       <div class="row">
         <div class="text-center">
           <div class="btn-group">
-            <a href="#" class="btn btn-default btn-lg" name="user">User</a>
+            <a href="#" class="btn btn-default btn-lg" name="user">Client</a>
             <a href="#" class="btn btn-default btn-lg" name= "dep_head">Department Head</a>
             <a href="#" class="btn btn-default btn-lg" name="chairman">Chairman</a>
             <a href="#" class="btn btn-default btn-lg" name="button" name="service_provider">Service Provider</a>

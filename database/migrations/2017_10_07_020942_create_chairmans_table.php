@@ -14,7 +14,9 @@ class CreateChairmansTable extends Migration
     public function up()
     {
         Schema::create('chairmans', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('ID');
+            $table->integer('UserID');
+            $table->string('Department');
             $table->timestamps();
         });
     }

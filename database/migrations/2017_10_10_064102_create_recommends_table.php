@@ -14,7 +14,10 @@ class CreateRecommendsTable extends Migration
     public function up()
     {
         Schema::create('recommends', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('dept_headID');
+            $table->integer('job_requestID');
+            $table->date('DateRecommended');
+            $table->boolean('Signed');
             $table->timestamps();
         });
     }

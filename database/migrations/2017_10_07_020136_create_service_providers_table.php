@@ -14,13 +14,9 @@ class CreateServiceProvidersTable extends Migration
     public function up()
     {
         Schema::create('service_providers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('username');
-            $table->string('position');
-            $table->string('gender');
-            $table->string('fullname');
-            $table->string('imail');
-            $table->string('password');
+            $table->increments('ID');
+            $table->integer('UserID');
+            $table->string('Position');
             $table->timestamps();
         });
     }

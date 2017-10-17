@@ -14,13 +14,13 @@ class CreateJobRequestsTable extends Migration
     public function up()
     {
         Schema::create('job_requests', function (Blueprint $table) {
-            $table->increments('request_id');
-            $table->string('requisition_unit');
-            $table->string('location');
-            $table->string('description');
-            $table->date('date_needed');
-            $table->date('alternative_date');
-            $table->integer('contact_no');
+            $table->increments('RequestID');
+            $table->string('RequisitionUnit');
+            $table->string('Location');
+            $table->string('Description');
+            $table->date('DateNeeded');
+            $table->date('AlternativeDate');
+            $table->integer('ContactNo');
             $table->timestamps();
         });
     }
