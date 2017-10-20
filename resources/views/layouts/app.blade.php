@@ -12,6 +12,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style media="screen">
+      .img-responsive{
+        height: 30px;
+      }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -29,7 +34,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <img class="img-responsive" src="images/upfixLogo.png" alt="UPFix"/>
                     </a>
                 </div>
 

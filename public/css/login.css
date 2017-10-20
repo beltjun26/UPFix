@@ -1,0 +1,8 @@
+.row img{
+  height: 75px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.img-responsive{
+  margin: 0 auto;
+}

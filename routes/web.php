@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/register/client' , 'RegisterUserType@registerAsClient');
+Route::get('/register/Chairman' , 'RegisterUserType@registerAsChairman');
+Route::get('/register/Department' , 'RegisterUserType@registerAsDepartment');
+Route::get('/register/ServiceProvider' , 'RegisterUserType@registerAsServiceProvider');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
