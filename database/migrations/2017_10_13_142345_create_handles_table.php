@@ -14,9 +14,8 @@ class CreateHandlesTable extends Migration
     public function up()
     {
         Schema::create('handles', function (Blueprint $table) {
-            $table->integer('job_requestID');
-            $table->integer('service_providerID');
-            $table->date('DateFinished');
+            $table->integer('jobRequestID');
+            $table->integer('serviceProviderID');
             $table->timestamps();
         });
     }

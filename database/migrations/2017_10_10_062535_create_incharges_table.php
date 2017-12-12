@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestsTable extends Migration
+class CreateInchargesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->integer('ClientID');
-            $table->integer('RequestID');
-            $table->date('requestd_date');
+        Schema::create('incharges', function (Blueprint $table) {
+            $table->integer('userID');
+            $table->integer('departmentID');
+            $table->increments('ID');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('incharges');
     }
 }

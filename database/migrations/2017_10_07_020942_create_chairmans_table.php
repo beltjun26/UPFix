@@ -13,10 +13,10 @@ class CreateChairmansTable extends Migration
      */
     public function up()
     {
-        Schema::create('chairmans', function (Blueprint $table) {
+        Schema::create('chairmen', function (Blueprint $table) {
             $table->increments('ID');
-            $table->integer('UserID');
-            $table->string('Department');
+            $table->integer('userID');
+            $table->integer('departmentID');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateChairmansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chairmans');
+        Schema::dropIfExists('chairmen');
     }
 }

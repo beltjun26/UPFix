@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 
-class RegisterUserType extends Controller
+class RegisterUserTypeController extends Controller
 {
   public function registerAsServiceProvider(){
     return view('auth.registerServiceProvider');
@@ -21,4 +22,5 @@ class RegisterUserType extends Controller
   public function registerAsDepartment(){
     return view('auth.registerDepartment');
   }
+
 }

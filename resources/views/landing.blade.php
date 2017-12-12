@@ -25,9 +25,8 @@
         <div class="text-center">
           <div class="btn-group">
             <a href="/register/client" class="btn btn-default btn-lg" name="user">Client</a>
-            <a href="/register/Department" class="btn btn-default btn-lg" name= "dep_head">Department Head</a>
-            <a href="/register/Chairman" class="btn btn-default btn-lg" name="chairman">Chairman</a>
-            <a href="/register/ServiceProvider" class="btn btn-default btn-lg" name="button" name="service_provider">Service Provider</a>
+            <a href="/register/incharge" class="btn btn-default btn-lg" name= "dep_head">Incharge</a>
+            <a href="/register/chairman" class="btn btn-default btn-lg" name="chairman">Chairman</a>
           </div>
         </div>
       </div>

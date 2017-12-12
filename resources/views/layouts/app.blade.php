@@ -11,6 +11,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}">
+    </script>
+    @yield('header')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style media="screen">
       .img-responsive{
@@ -33,44 +36,115 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <img class="img-responsive" src="images/upfixLogo.png" alt="UPFix"/>
+                    <a class="navbar-brand" href="{{ Auth::check()? '/home' : '/' }}">
+                        <img class="img-responsive" src="{{ asset('/images/upfixLogo.png') }}" alt="UPFix"/>
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        @auth
+                          @if(Auth::user()->role == 'client')
+                            <li class="
+                            {{
+                               (Request::route()->getName()=='home' ||
+                               Request::route()->getName()=='C_requestForm')? 'active' : ''
+                             }}"><a href="/home">Job Requests <span class="badge">{{ Auth::user()->getRole->getNotifNumber('job_request') }}</span></a></li>
+                            <li class="{{ (Request::route()->getName()=='C_accomplishedRequests')? 'active' : '' }}">
+                              <a href="/client/accomplishedRequests">Accomplished Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('accomplished_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{ (Request::route()->getName()=='C_allRequests')? 'active' : '' }}">
+                              <a href="/client/allRequests">All Request
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
+                              </a>
+                            </li>
+                          @endif
+                          @if(Auth::user()->role == 'incharge')
+                            <li class="{{ (Request::route()->getName()=='home')? 'active' : '' }}">
+                              <a href="/home">Unrecommend Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('unrecommend_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{ (Request::route()->getName()=='I_assignRequest')? 'active' : '' }}">
+                              <a href="/incharge/assignRequests">Assign Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('assign_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{ (Request::route()->getName()=='I_services')? 'active' : '' }}"><a href="/incharge/services">Services</a></li>
+                            <li class="{{ (Request::route()->getName()=='I_allRequest')? 'active' : '' }}">
+                              <a href="/incharge/allRequests">All Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{
+                               (Request::route()->getName()=='I_serviceProviders' ||
+                               Request::route()->getName()=='I_reports' ||
+                               Request::route()->getName()=='I_ServiceProviderForm')? 'active' : ''
+                             }}"><a href="/incharge/serviceProviders">Service Providers</a></li>
+                          @endif
+                          @if(Auth::user()->role == 'chairman')
+                            <li class="{{ (Request::route()->getName()=='home')? 'active' : '' }}">
+                              <a href="/home">Unapproved Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('unappoved_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{ (Request::route()->getName()=='CH_allRequests')? 'active' : '' }}">
+                              <a href="/chairman/allRequests">All Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
+                              </a>
+                            </li>
+                            <li class="{{
+                               (Request::route()->getName()=='CH_serviceProviders' ||
+                               Request::route()->getName()=='SPReport')? 'active' : ''
+                             }}"><a href="/chairman/serviceProviders">Service Providers</a></li>
+                          @endif
+                          @if(Auth::user()->role == 'serviceProvider')
+                            <li>
+                              <a href="/home">Job Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('job_requests') }}</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/serviceProvider/allRequests">All Requests
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
+                              </a>
+                            </li>
+                            <li><a href="/serviceProvider/unavailability">Unavailability</a></li>
+                          @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
+
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                        @auth
+                          <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                  {{ Auth::user()->fullName }} <span class="caret"></span>
+                              </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+                              <ul class="dropdown-menu" role="menu">
+                                  <li>
+                                    <a href="/profile/{{ Auth::user()->username }}">Profile</a>
+                                  </li>
+                                  <li>
+                                      <a href="{{ route('logout') }}"
+                                          onclick="event.preventDefault();
+                                                   document.getElementById('logout-form').submit();">
+                                          Logout
+                                      </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
+                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                          {{ csrf_field() }}
+                                      </form>
+                                  </li>
+                              </ul>
+                          </li>
+                          @endauth
                     </ul>
                 </div>
             </div>

@@ -14,10 +14,8 @@ class CreateApprovesTable extends Migration
     public function up()
     {
         Schema::create('approves', function (Blueprint $table) {
-            $table->integer('service_providerID');
+            $table->integer('jobRequestID');
             $table->integer('chairmanID');
-            $table->increments('ID');
-            $table->string('Department');
             $table->timestamps();
         });
     }
