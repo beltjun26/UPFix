@@ -52,6 +52,9 @@ class ClientController extends Controller
           ->whereIn('requestID', function($d){
             $d->select('jobRequestID')->from('accomplish')->where('confirm', '1');
           })->paginate(10);
+      }else if($sort=='conflict'){
+        $jobRequests = JobRequest::where('clientID', Auth::user()->getRole->ID)
+          ->where('conflict', '1')->paginate(10);
       }
       return view('client.allRequests', compact('jobRequests', 'sort'));
     }
@@ -107,16 +110,37 @@ class ClientController extends Controller
       return view('client.accomplishedRequests', compact('jobRequests'));
     }
 
+    public function conflictRequest($requestID){
+      $jobRequest = JobRequest::where('requestID', $requestID)->first();
+      return view('client.conflictRequest', compact('jobRequest'));
+    }
 
     public function confirm(Request $request){
       DB::table('accomplish')->where('jobRequestID', $request->requestID)->update([
         'confirm' => '1',
         'rating' => $request->rating,
         'comment' => $request->comment,
-        'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         'updated_at' => \Carbon\Carbon::now()->toDateTimeString()
       ]);
 
       return redirect('/client/accomplishedRequests');
+    }
+
+    public function conflicts(){
+      $jobRequests = JobRequest::where('conflict', '1')
+      ->where('clientID', Auth::user()->getRole->ID)
+      ->paginate(10);
+
+      return view('client/conflicts', compact('jobRequests'));
+    }
+
+    public function changeDate(Request $request){
+      JobRequest::where('requestID', $request->requestID)
+      ->update([
+        'dateNeeded' => $request->dateNeeded,
+        'alternativeDate' => $request->alternativeDate,
+        'conflict' => 0,
+      ]);
+      return redirect('/client/conflicts');
     }
 }

@@ -19,7 +19,7 @@
 <div class="container">
     <div class="row">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <h2 class="">Summary Report</h2>
           </div>
           <div class="col-sm-3">
@@ -52,6 +52,11 @@
               </select>
             </div>
           </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <input class="form-control" id="year" type="year" name="year" value="{{ $year? $year: date('Y') }}">
+            </div>
+          </div>
           <!-- <button class="btn btn-default pull-right" type="button" name="button">Monthly</button> -->
         </div>
         <div class="talble-responsive">
@@ -69,20 +74,20 @@
               @forelse ($serviceProviders as $serviceProvider)
               <tr>
                 <td>{{ $serviceProvider->getUser->fullName }}</td>
-                <td>{{ count($serviceProvider->getAssigned($sort)) }}</td>
-                <td>{{ count($serviceProvider->getAccomplished($sort)) }}</td>
+                <td>{{ count($serviceProvider->getAssigned($sort, $year)) }}</td>
+                <td>{{ count($serviceProvider->getAccomplished($sort, $year)) }}</td>
                   @php
                     $average = 0;
                   @endphp
-                  @forelse ($serviceProvider->getAccomplished($sort) as $jobRequest)
+                  @forelse ($serviceProvider->getAccomplished($sort, $year) as $jobRequest)
                     @php
                       $average = $average + $jobRequest->rating;
                     @endphp
                   @empty
                   @endforelse
                   @php
-                    if(count($serviceProvider->getAccomplished($sort))!=0)
-                    $average = $average / count($serviceProvider->getAccomplished($sort))
+                    if(count($serviceProvider->getAccomplished($sort, $year))!=0)
+                    $average = $average / count($serviceProvider->getAccomplished($sort, $year))
                   @endphp
                 <td>
                   @if ($average > 0 && $average < 1.5)

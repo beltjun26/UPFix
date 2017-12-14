@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Department;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
@@ -8,7 +9,13 @@ use Illuminate\Http\Request;
 class RegisterUserTypeController extends Controller
 {
   public function registerAsServiceProvider(){
-    return view('auth.registerServiceProvider');
+    $department = Department::first();
+    if($department){
+      $departments = Department::all();
+      return view('auth.registerServiceProvider', compact('departments'));
+    }else{
+      return view ('error.departmentMissing');
+    }
   }
 
   public function registerAsChairman(){
@@ -16,11 +23,23 @@ class RegisterUserTypeController extends Controller
   }
 
   public function registerAsClient(){
-    return view('auth.registerClient');
+    $department = Department::first();
+    if($department){
+      $departments = Department::all();
+      return view('auth.registerClient', compact('departments'));
+    }else{
+      return view ('error.departmentMissing');
+    }
   }
 
-  public function registerAsDepartment(){
-    return view('auth.registerDepartment');
+  public function registerAsIncharge(){
+    $department = Department::first();
+    if($department){
+      $departments = Department::all();
+      return view('auth.registerIncharge', compact('departments'));
+    }else{
+      return view ('error.departmentMissing');
+    }
   }
 
 }

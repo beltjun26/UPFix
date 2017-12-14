@@ -14,11 +14,15 @@ class jobRequest extends Model
     protected $table = 'job_requests';
 
     protected $fillable = [
-      'requisitioningUnit', 'location', 'description', 'dateNeeded', 'alternativeDate', 'contactNo', 'clientID','serviceID',
+      'requisitioningUnit', 'location', 'description', 'dateNeeded', 'alternativeDate', 'contactNo', 'clientID','serviceID', 'conflict'
     ];
 
     protected $dates = [
       'alternativeDate', 'dateNeeded',
+    ];
+
+    protected $cast = [
+      'conflict' => 'boolean',
     ];
 
     public function approved(){
@@ -70,6 +74,9 @@ class jobRequest extends Model
     }
 
     public function indication(){
+      if($this->conflict){
+        return 'danger';
+      }
       if($this->assignedTo()){
         return 'success';
       }else if($this->approved() && $this->recommended()) {

@@ -25,6 +25,8 @@ class Client extends Model
     if($category == 'job_request'){
       $count = JobRequest::where('clientID', $this->ID)->whereNotIn('requestID', function($d){
         $d->select('jobRequestID')->from('accomplish');
+      })->where(function($query){
+        $query->where('conflict', false)->orWhereNull('conflict');
       })->count();
     }
     if($category == 'accomplished_requests'){
@@ -33,7 +35,13 @@ class Client extends Model
       })->count();
     }
     if($category == 'all_requests'){
-      $count = jobRequest::where('clientID', $this->ID)->count();
+      $count = jobRequest::where('clientID', $this->ID)->where(function($query){
+        $query->where('conflict', false)->orWhereNull('conflict');
+      })->count();
+    }
+    if($category == 'conflict'){
+      $count = JobRequest::where('clientID', $this->ID)
+        ->where('conflict', '1')->count();
     }
     if($count == 0){
       return '';

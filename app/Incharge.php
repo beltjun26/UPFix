@@ -24,6 +24,8 @@ class Incharge extends Model
           $q->select('jobRequestID')->from('recommends');
         })->whereIn('serviceID', function($d){
           $d->select('services.ID')->from('services')->join('incharges', 'incharges.ID', '=', 'inchargeID')->where('departmentID', $this->departmentID);
+        })->where(function($query){
+          $query->where('conflict', false)->orWhereNull('conflict');
         })->count();
       }
       if($category == 'assign_requests'){
@@ -31,11 +33,15 @@ class Incharge extends Model
           $q->select('jobRequestID')->from('approves');
         })->whereNotIn('requestID', function($d){
           $d->select('jobRequestID')->from('assign');
+        })->where(function($query){
+          $query->where('conflict', false)->orWhereNull('conflict');
         })->count();
       }
       if($category == 'all_requests'){
         $count = JobRequest::whereIn('serviceID', function($d){
           $d->select('services.ID')->from('services')->join('incharges', 'incharges.ID', '=', 'inchargeID')->where('departmentID', $this->departmentID);
+        })->where(function($query){
+          $query->where('conflict', false)->orWhereNull('conflict');
         })->count();
       }
       if($count == 0){

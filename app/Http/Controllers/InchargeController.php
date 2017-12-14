@@ -95,6 +95,8 @@ class InchargeController extends Controller
       $q->select('jobRequestID')->from('approves');
     })->whereNotIn('requestID', function($d){
       $d->select('jobRequestID')->from('assign');
+    })->where(function($query){
+      $query->where('conflict', false)->orWhereNull('conflict');
     })->paginate(10);
     return view('incharge.assignRequests', compact('jobRequests'));
   }
@@ -111,8 +113,9 @@ class InchargeController extends Controller
   public function reports(Request $request){
     $sort = $request->query('sort');
     $category = $request->query('category');
+    $year = $request->query('year');
     $serviceProviders = ServiceProvider::where('inchargeID', Auth::user()->getRole->ID)->paginate(10);
-    return view('incharge.reports', compact('serviceProviders', 'sort', 'category'));
+    return view('incharge.reports', compact('serviceProviders', 'sort', 'category', 'year'));
   }
 
   public function SPReport($serviceProviderID){
@@ -124,7 +127,12 @@ class InchargeController extends Controller
     return view('chairman.jobReport', compact('jobRequests', 'serviceProvider'));
   }
 
-
+  public function returnRequest($requestID){
+    JobRequest::where('requestID', $requestID)->update([
+      'conflict' => 1
+    ]);
+    return redirect('/incharge/assignRequests');
+  }
 
   public function recommend(Request $request){
     DB::table('recommends')->insert([

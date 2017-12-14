@@ -119,9 +119,11 @@ class ChairmanController extends Controller
   public function reports(Request $request){
     $sort = $request->query('sort');
     $category = $request->query('category');
-    $serviceProviders =ServiceProvider::join('incharges', 'service_providers.inchargeID', '=', 'incharges.ID')
-      ->where('incharges.departmentID', Auth::user()->getRole->departmentID)
-      ->paginate(10);
-    return view('chairman.reports', compact('serviceProviders', 'sort', 'category'));
+    $year = $request->query('year');
+    $serviceProviders = ServiceProvider::whereIn('inchargeID', function($d){
+      $d->select('ID')->from('incharges')->where('departmentID', Auth::user()->getRole->departmentID);
+    })->paginate(10);
+
+    return view('chairman.reports', compact('serviceProviders', 'sort', 'category', 'year'));
   }
 }

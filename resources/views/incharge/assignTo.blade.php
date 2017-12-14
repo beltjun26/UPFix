@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('header')
-<style media="screen">
+<script type="text/javascript">
 
+</script>
+<style media="screen">
 </style>
 @endsection
 
@@ -52,21 +54,42 @@
             <div class="col-sm-2">
               <label>Assign To:</label>
             </div>
+            @php
+              $noSPavailable = 0;
+            @endphp
             <div class="col-sm-10">
               <div class="form-group">
                 <select class="form-control" name="serviceProviderID">
                   @forelse ($serviceProviders as $serviceProvider)
-                  <option value="{{ $serviceProvider->ID }}">{{ $serviceProvider->getUser->fullName }}</option>
+                    @if($serviceProvider->isAvailable($jobRequest->dateNeeded) || $serviceProvider->isAvailable($jobRequest->alternativeDate))
+                      @php
+                        $noSPavailable = 1;
+                      @endphp
+                      <option class="danger" value="{{ $serviceProvider->ID }}">{{ $serviceProvider->getUser->fullName }}</option>
+                    @else
+                    @endif
                   @empty
                   @endforelse
                 </select>
               </div>
             </div>
           </div>
+          @if($noSPavailable == 0)
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-2">
+              <p class="text-danger">No available Service Provider these dates</p>
+            </div>
+          </div>
+          @else
+          @endif
           <div class="row">
             <div class="col-sm-12">
               <input type="hidden" name="requestID" value="{{ $jobRequest->requestID }}">
+              @if($noSPavailable == 0)
+              <a href="/incharge/returnRequest/{{ $jobRequest->requestID }}" class="btn btn-danger pull-right">Return Request</a>
+              @else
               <button class="btn btn-info pull-right" type="submit" name="submit">Assign</button>
+              @endif
             </div>
           </div>
         </form>

@@ -23,6 +23,7 @@ class CreateJobRequestsTable extends Migration
             $table->date('dateNeeded');
             $table->date('alternativeDate');
             $table->string('contactNo');
+            $table->boolean('conflict')->nullable();
             $table->timestamps();
         });
     }

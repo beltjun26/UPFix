@@ -30,6 +30,8 @@ class HomeController extends Controller
         if(Auth::user()->role == 'client'){
           $jobRequests = JobRequest::where('clientID', Auth::user()->getRole->ID)->whereNotIn('requestID', function($d){
             $d->select('jobRequestID')->from('accomplish');
+          })->where(function($query){
+            $query->where('conflict', false)->orWhereNull('conflict');
           })->paginate(10);
           return view('client.home', compact('jobRequests'));
         }

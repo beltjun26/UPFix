@@ -18,8 +18,11 @@ class ServiceProvider extends Model
       return $this->hasOne('App\User', 'userID', 'userID');
     }
 
-    public function getAccomplished($sort){
+    public function getAccomplished($sort, $year){
       $month = '00';
+      if(!$year){
+        $year = date('Y');
+      }
       if($sort=='jan'){
         $month = '01';
       }
@@ -60,6 +63,7 @@ class ServiceProvider extends Model
       $accomplish = DB::table('accomplish')
         ->join('job_requests', 'job_requests.requestID', '=', 'accomplish.jobRequestID')
         ->where('serviceProviderID', $this->ID)
+        ->whereYear('job_requests.created_at', '=', $year)
         ->get();
       if($sort && $sort!='all'){
         if($sort=='jan-jun'){
@@ -68,6 +72,7 @@ class ServiceProvider extends Model
             ->where('serviceProviderID', $this->ID)
             ->whereMonth('job_requests.created_at', '>=' , '01')
             ->whereMonth('job_requests.created_at', '<=' , '06')
+            ->whereYear('job_requests.created_at', '=', $year)
             ->get();
         }
         else if($sort=='jul-dec'){
@@ -76,12 +81,14 @@ class ServiceProvider extends Model
             ->where('serviceProviderID', $this->ID)
             ->whereMonth('job_requests.created_at', '>=' , '07')
             ->whereMonth('job_requests.created_at', '<=' , '12')
+            ->whereYear('job_requests.created_at', '=', $year)
             ->get();
         }else{
           $accomplish = DB::table('accomplish')
           ->join('job_requests', 'job_requests.requestID', '=', 'accomplish.jobRequestID')
           ->where('serviceProviderID', $this->ID)
           ->whereMonth('job_requests.created_at', '=' , $month)
+          ->whereYear('job_requests.created_at', '=', $year)
           ->get();
         }
       }
@@ -89,7 +96,10 @@ class ServiceProvider extends Model
         return $accomplish;
     }
 
-    public function getAssigned($sort){
+    public function getAssigned($sort, $year){
+      if(!$year){
+        $year = date('Y');
+      }
       $month = '00';
       if($sort=='jan'){
         $month = '01';
@@ -130,6 +140,7 @@ class ServiceProvider extends Model
       $assigned = DB::table('assign')
       ->join('job_requests', 'job_requests.requestID', '=', 'assign.jobRequestID')
       ->where('serviceProviderID', $this->ID)
+      ->whereYear('job_requests.created_at', '=',$year)
       ->get();
       if($sort && $sort!='all'){
         if($sort=='jan-jun'){
@@ -138,6 +149,7 @@ class ServiceProvider extends Model
           ->where('serviceProviderID', $this->ID)
           ->whereMonth('job_requests.created_at', '>=' , '01')
           ->whereMonth('job_requests.created_at', '<=' , '06')
+          ->whereYear('job_requests.created_at', '=', $year)
           ->get();
         }
         else if($sort=='jul-dec'){
@@ -146,12 +158,14 @@ class ServiceProvider extends Model
           ->where('serviceProviderID', $this->ID)
           ->whereMonth('job_requests.created_at', '>=' , '07')
           ->whereMonth('job_requests.created_at', '<=' , '12')
+          ->whereYear('job_requests.created_at', '=', $year)
           ->get();
         }else{
           $assigned = DB::table('assign')
           ->join('job_requests', 'job_requests.requestID', '=', 'assign.jobRequestID')
           ->where('serviceProviderID', $this->ID)
           ->whereMonth('job_requests.created_at', '=' , $month)
+          ->whereYear('job_requests.created_at', '=', $year)
           ->get();
         }
       }
@@ -178,4 +192,18 @@ class ServiceProvider extends Model
         return $count;
       }
     }
+
+    public function isAvailable($date){
+      $unavailability = DB::table('unavailability')
+        ->where('serviceProviderID', $this->ID)
+        ->where('date', $date)
+        ->count();
+      if($unavailability){
+        return False;
+      }else{
+        return True;
+      }
+    }
+
+
 }

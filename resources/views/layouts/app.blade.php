@@ -56,6 +56,12 @@
                                 <span class="badge">{{ Auth::user()->getRole->getNotifNumber('accomplished_requests') }}</span>
                               </a>
                             </li>
+                            <li class="{{ (Request::route()->getName()=='C_conflicts' ||
+                              Request::route()->getName()=='C_conflictRequest')? 'active' : '' }}">
+                              <a href="/client/conflicts">Conflicts
+                                <span class="badge">{{ Auth::user()->getRole->getNotifNumber('conflict') }}</span>
+                              </a>
+                            </li>
                             <li class="{{ (Request::route()->getName()=='C_allRequests')? 'active' : '' }}">
                               <a href="/client/allRequests">All Request
                                 <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
@@ -102,17 +108,20 @@
                              }}"><a href="/chairman/serviceProviders">Service Providers</a></li>
                           @endif
                           @if(Auth::user()->role == 'serviceProvider')
-                            <li>
+                            <li class="{{ (Request::route()->getName()=='home')? 'active' : '' }}">
                               <a href="/home">Job Requests
                                 <span class="badge">{{ Auth::user()->getRole->getNotifNumber('job_requests') }}</span>
                               </a>
                             </li>
-                            <li>
+                            <li class="{{ (Request::route()->getName()=='S_allRequests')? 'active' : '' }}">
                               <a href="/serviceProvider/allRequests">All Requests
                                 <span class="badge">{{ Auth::user()->getRole->getNotifNumber('all_requests') }}</span>
                               </a>
                             </li>
-                            <li><a href="/serviceProvider/unavailability">Unavailability</a></li>
+                            <li class="{{ (Request::route()->getName()=='S_unavailability' ||
+                              Request::route()->getName()=='S_unavailabilityList')? 'active' : '' }}">
+                              <a href="/serviceProvider/unavailability">Unavailability</a>
+                            </li>
                           @endif
                         @endauth
                     </ul>

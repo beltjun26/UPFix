@@ -3,6 +3,8 @@
 @section('header')
 <script type="text/javascript" src="{{ asset('js/client/home.js') }}">
 </script>
+<script type="text/javascript" src="{{ asset('js/serviceProvider/allRequests.js') }}">
+</script>
 <style media="screen">
   .clickable-row{
     cursor: pointer;
@@ -21,9 +23,7 @@
           <div class="form-group">
             <select class="form-control pull-right" name="sort">
               <option value="all">All</option>
-              <option value="unrecommended" {{ $sort == 'unrecommended'? 'Selected' : '' }}>Unrecommended</option>
               <option value="unaccomplished" {{ $sort == 'unaccomplished'? 'Selected' : '' }}>Unaccomplished</option>
-              <option value="unassigned" {{ $sort == 'unassigned'? 'Selected' : '' }}>Unassigned</option>
               <option value="for_confirmation" {{ $sort == 'for_confirmation'? 'Selected' : '' }}>For Confirmation</option>
               <option value="finished" {{ $sort == 'finished'? 'Selected' : '' }}>Finished</option>
             </select>
